@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="../node_modules/vue/dist/vue.js"></script>
+    <style>
+        .done{
+            text-decoration: line-through;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
@@ -14,6 +19,7 @@
             <a v-bind:href="'foo'">{{ bar }}</a>    <!--href:foo    输出world-->
             <a v-bind:href="'http://'+foo">{{ bar }}</a>    <!--href:hello    输出world-->
             <a v-bind:href=" done ? 123 : 234">{{ false ? 'foot':bar }}</a>
+            <p v-bind:class="{ done: true}" :style="{backgroundColor:color }">hh</p>   <!--根据false判断出是否加载样式done-->
         </p>
 
     </div>
@@ -24,6 +30,7 @@
                 foo:"hello",
                 bar:"world",
                 done:true,
+                color:'red'
             }
         })
     </script>
