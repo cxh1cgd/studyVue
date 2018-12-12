@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <!--
+        v-if 条件渲染
+        v-for 列表渲染
+        v-on 注册时间
+        v-bind 属性绑定
+        v-once 只绑定一次
+        v-html 绑定输出html
+    -->
+    <p v-if="false">看不见我吧</p>
+    <p v-if="true">看得见我</p>
+    <a href="http://www.google.com" @click="gotoGoogle">去谷歌</a>   <!--跳转到google-->
+    <a href="http://www.google.com" @click.prevent="gotoGoogle">去谷歌</a> <!--无法跳转到google，事件被prevent阻止了-->
+</div>
+<script>
+    new Vue({
+        el: '#app',
+        data:{},
+        methods:{
+
+            //假设登录成功后提示后跳转
+            gotoGoogle(){
+                alert("登录成功！点击将会跳转到google")
+            }
+        },
+    })
+</script>
+</body>
+</html>
