@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p>
+            <!--v-bind只能用于属性值，{{}}只能用于文本对象中，在标签中无效,想原样输出则用单引号-->
+            <a v-bind:href="foo+'bar'">{{ bar }}</a>
+            <a v-bind:href="foo">{{ 'bar' }}</a>      <!--href:hello   输出bar-->
+            <a v-bind:href="'foo'">{{ bar }}</a>    <!--href:foo    输出world-->
+            <a v-bind:href="'http://'+foo">{{ bar }}</a>    <!--href:hello    输出world-->
+            <a v-bind:href=" done ? 123 : 234">{{ false ? 'foot':bar }}</a>
+        </p>
+
+    </div>
+    <script>
+        new Vue({
+            el: "#app",
+            data:{
+                foo:"hello",
+                bar:"world",
+                done:true,
+            }
+        })
+    </script>
+</body>
+</html>
