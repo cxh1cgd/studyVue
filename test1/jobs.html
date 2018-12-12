@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .done {
+            text-decoration:line-through;
+            color: #ff0000;
+        }
+    </style>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+
+<div id="app" class="app">
+    <h1>jobs</h1>
+    <p>{{ jobs.filter(job => !job.done).length}} of {{jobs.length}} remain</p><button @click="archive">归档</button>
+    <p v-for="(item,index) in jobs">
+        <input type="checkbox" v-model = "item.done">
+        <span v-bind:class="{done:item.done}"> {{ item.job }} </span>
+        <button @click="deleteJob(index)">x</button>
+    </p>
+    <p>
+        <input type="text" placeholder="请输入要添加的任务" v-model="jobContent" @keydown.enter="addJob">
+        <button @click="addJob" >添加</button>
+    </p>
+</div>
+<script>
+
+   const jobs = [
+       {id:1,job:"吃饭",done:true}
+   ];
+   const app = new Vue({
+        el:'#app',
+        data:{
+            message:"hello vue",
+            jobs:jobs,
+            jobContent: "",
+        },
+        methods: {
+            //添加任务
+            addJob(){
+                const jobContent = this.jobContent.trim();
+                if (!jobContent.length){return}
+                let id = 0;
+                if (!this.jobs.length){
+                    id = 1;
+                }else {
+                    id = this.jobs[this.jobs.length-1].id+1;
+                }
+                this.jobs.push({id:id,job:jobContent,done:false});
+                this.jobContent = '';
+            },
+            //删除任务：
+            deleteJob(index){
+
+                this.jobs.splice(index,1)
+            },
+
+            //删除已完成任务
+            archive(){
+                //delete this.jobs[1]
+               let doneJobs = this.jobs.filter(item =>item.done);
+                for (let i = 0;i<doneJobs.length;i++){
+                    id = doneJobs[i].id;
+                    for (let j=0;j<this.jobs.length;j++){
+                        if (this.jobs[j].id === id){
+                            this.jobs.splice(j,1)
+                        }
+                    }
+                }
+            }
+
+        }
+    })
+</script>
+</body>
+</html>
