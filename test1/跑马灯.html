@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>跑马灯效果</title>
+</head>
+<body>
+<div id="app">
+    <h2 @click="quickDisplay">{{message}}</h2>
+</div>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    new Vue({
+        el:'#app',
+        data:{
+            message:'好好学习，天天向上，争做第一',
+            t1:{tricker:{},start:false},   //定时器一
+            t2:{tricker:{},start:false},  //定时器二
+        },
+        methods: {
+            quickDisplay() {
+                console.log(this.t1.start);
+                if (this.t1.start) {
+                    this.t1.start = false;
+                    return false;
+                }
+                this.t1.start = true;
+                const cpmessage = this.message;
+                //设置定时器
+                // window.clearInterval(this.t1);
+                this.t1.tricker = window.setInterval(() => {
+                    if (!this.t1.start) {
+                        this.message = cpmessage;
+                        window.clearInterval(this.t1.tricker);
+                    }
+                    //message处理
+                    firstChar = this.message[0];
+                    end = this.message.substring(1);
+                    this.message = end + firstChar;
+                }, 500);
+
+            },
+        }
+    })
+</script>
+</body>
+</html>
