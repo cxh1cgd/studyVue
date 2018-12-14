@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style rel="stylesheet" type="text/css">
+        * {
+            padding: 0;
+            margin: 0;
+
+        }
+        .nav{
+            background-color: #537071;
+            height: 50px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .clearfix:after {
+            content: ".";
+            display: block;
+            clear: both;
+            visibility: hidden;
+            height: 0;
+            font-size:0;
+        }
+        .nav-title{
+            font-size: 20px;
+            color: #712842;
+            line-height: 50px;
+            display: block;
+            margin: 0 auto;
+            text-align: center;
+        }
+        section{
+            box-sizing: border-box;
+            border: 1px solid red;
+            border-radius: 5px;
+            border-top: none;
+            border-bottom: none;
+        }
+        .edit-nav{
+            padding-left: 40px;
+            height: 60px;
+            box-sizing: border-box;
+            font-weight: normal;
+        }
+        section  div input[type="text"]{
+            border: 2px solid orange;
+            padding: 5px;
+            border-radius: 4px;
+            margin: 10px 20px;
+            height: 40px;
+        }
+        section  div input[type="submit"]{
+            border: 1px solid #00cc99;
+            background-color: #aeccc2;
+            border-radius: 2px;
+            width: 60px;
+            margin: 10px;
+            margin-right: 150px;
+            height: 40px;
+        }
+        section div label{
+            margin-left: 30px;
+            font-family: Arial;
+            font-weight: 500;
+        }
+        .edit-summary{
+            width: 200px;
+        }
+        table{
+            border-collapse: collapse;
+            border: 1px solid burlywood;
+
+        }
+
+        table tr{
+            height: 50px;
+            border-bottom: 1px solid burlywood;
+
+
+        }
+        table tr td{
+            border: 1px solid burlywood;
+            padding-left: 8px;
+            border-radius: 5px;
+        }
+
+        .td-id{
+            width: 180px;
+            font-size: 15px;
+        }
+        .td-name{
+            width: 210px;
+            font-size: 15px;
+        }
+        .td-time{
+            width: 400px;
+            font-size: 15px;
+        }
+        .td-operation{
+            width: 150px;
+            border-right: none;
+            font-size: 15px;
+        }
+        .tr-title{
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .main{
+            width: 950px;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container main" id="app">
+    <nav class="nav"><span class="nav-title">品牌管理</span></nav>
+    <section>
+        <div class="edit-nav">
+            <input type="text" id="nameInput" @keydown.esc="handleEsc" @keydown.enter="handleAddBrand" placeholder="请输入品牌名">
+            <input type="submit" @click="handleAddBrand"  value="添加">
+            <label>请输入关键词</label>
+            <input type="text"  class="edit-summary"  v-model="searchInput">
+        </div>
+    </section>
+        <table>
+            <tr class="tr-title">
+                <td class="td-id">ID</td>
+                <td class="td-name">品牌名称</td>
+                <td class="td-time">创建时间</td>
+                <td class="td-operation">操作</td>
+            </tr>
+            <tr  v-for="item in handleSearch()">
+                <td class="td-id" v-text="item.id"></td>
+                <td class="td-name" v-text="item.name"></td>
+                <td class="td-time" v-text="item.time"></td>
+                <td class="td-operation" @click="handleDeleteBrand(item.id)">删除</td>
+            </tr>
+        </table>
+    </div>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <script>
+        new Vue({
+            data:{
+                brands:[],
+                searchInput:'',
+            },
+
+            methods:{
+                handleAddBrand(){
+                    nameInput = document.getElementById('nameInput');
+                    const name = nameInput.value.trim();
+                    if (!name){
+                        return false
+                    }
+                    let id = 1;
+                    length = this.brands.length;
+                    if (length >0){
+                        id = this.brands[length-1].id+1;
+                    }
+                    now = new Date();
+                    month = now.getMonth()+1;
+                    time = now.getFullYear()+"-"+month+"-"+now.getDate()+"   "+now.getHours()+":"+now.getMinutes()+":"+now.getSeconds();
+                    this.brands.push({id:id,name:name,time:time});
+                    nameInput.value = '';
+                },
+
+                handleEsc(e){
+                    e.target.value = '';
+                },
+
+                handleDeleteBrand(id){
+                    this.brands.forEach((brand,index) => {
+                        if (brand.id === id) {
+                            this.brands.splice(index,1);
+                            return
+                        }
+                    })
+                },
+
+                handleSearch(){
+                    console.log(this.brands.length);
+                    return this.brands.filter((brand) => {
+                        return brand.name.indexOf(this.searchInput) !== -1
+                    })
+                },
+            },
+        }).$mount('#app')
+
+    </script>
+</body>
+</html>
